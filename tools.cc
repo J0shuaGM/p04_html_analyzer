@@ -71,6 +71,9 @@ Almacen Lectura(std::ifstream& fichero) {
   int contador = 0; 
   bool dentro_comentario = false; 
   int linea_inicio_comentario = 0;
+  bool html_encontrado = false;
+  bool head_encontrado = false;
+  bool body_encontrado = false;
 
   //Expresiones regulares
   std::regex inicio_comentario(R"(<!--)");            // Detectar el inicio de comentario HTML
@@ -125,18 +128,30 @@ Almacen Lectura(std::ifstream& fichero) {
       std::string nombre_etiqueta = match[2].str();
       std::string atributos_str = match[3].str();
       etiquetas.setEtiquetas(es_cierre ? "/" + nombre_etiqueta : nombre_etiqueta, contador);
-      if (!es_cierre && !atributos_str.empty()) {
-        auto attr_begin = std::sregex_iterator(atributos_str.begin(), atributos_str.end(), expAtributos);
-        auto attr_end = std::sregex_iterator();
-        for (std::sregex_iterator a = attr_begin; a != attr_end; ++a) {
-          std::smatch attr_match = *a;
-          std::string par_texto = attr_match.str();
-          std::string concatenar = nombre_etiqueta + "\n" + par_texto;
-          atributos.setAtributo(par_texto, contador);
+      if (!es_cierre) {
+        if (nombre_etiqueta == "html") {
+          html_encontrado = true;
+        } else if (nombre_etiqueta == "head") {
+          head_encontrado = true;
+        } else if (nombre_etiqueta == "body") {
+          body_encontrado = true;
+        }
+        if (!atributos_str.empty()) {
+          auto attr_begin = std::sregex_iterator(atributos_str.begin(), atributos_str.end(), expAtributos);
+          auto attr_end = std::sregex_iterator();
+          for (std::sregex_iterator a = attr_begin; a != attr_end; ++a) {
+            std::smatch attr_match = *a;
+            std::string par_texto = attr_match.str();
+            std::string concatenar = nombre_etiqueta + "\n" + par_texto;
+            atributos.setAtributo(concatenar, contador);
+          }
         }
       }
     }
   }
+  estructura.setEstructura("HTML", html_encontrado);
+  estructura.setEstructura("HEAD", head_encontrado);
+  estructura.setEstructura("BODY", body_encontrado);
   almacen.setAtributo(atributos);
   almacen.setComentarios(comentario);
   almacen.setDocumento(estructura); 

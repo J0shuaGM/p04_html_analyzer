@@ -23,15 +23,16 @@ std::ostream& operator<<(std::ostream& salida, Almacen almacen) {
   if(!almacen.comentarios_.getVectorComentarios().empty()) {
     salida << almacen.comentarios_.getComentario(0).first << std::endl;
   }
-
-  salida << "STRUCTURE: " << std::endl;
+  salida << std::endl; 
+  salida << "STRUCTURE:" << std::endl;
   for(const auto& est : almacen.estructura_.getVectorEstructura()) {
     salida << est.first << ": " << (est.second ? "True" : "False") << std::endl;
   }
 
   if(almacen.estructura_.getDcotype().first) {
-    salida << "DOCTYPE" << std::endl;
-    salida << "HTML5" << std::endl; 
+    salida << "DOCTYPE : HTML5" << std::endl;
+  } else {
+    salida << "DOCTYPE : False" << std::endl;
   }
   salida << std::endl;
 
@@ -42,18 +43,20 @@ std::ostream& operator<<(std::ostream& salida, Almacen almacen) {
   salida << std::endl;
 
   salida << "ATTRIBUTES: " << std::endl;
-  int ultima_linea = -1; 
-  std::string ultima_etiqueta_impresa = "";
+  int ultima_linea = -1;
+  std::string ultima_etiqueta;
   for(const auto& atributo : almacen.atributo_.getVectorAtributo()) {
-    std::string contenido = atributo.first;
-    size_t pos_salto = contenido.find('\n');
-    std::string nombre_etiqueta = contenido.substr(0, pos_salto); 
-    std::string atributo_real = contenido.substr(pos_salto + 1);
-    if(atributo.second != ultima_linea || nombre_etiqueta != ultima_etiqueta_impresa) {
+    const std::size_t separador = atributo.first.find('\n');
+    const std::string nombre_etiqueta = atributo.first.substr(0, separador);
+    const std::string atributo_real = separador == std::string::npos
+        ? atributo.first
+        : atributo.first.substr(separador + 1);
+
+    if(atributo.second != ultima_linea || nombre_etiqueta != ultima_etiqueta) {
       if(ultima_linea != -1) salida << std::endl;
       salida << "[Line " << atributo.second << "] " << nombre_etiqueta << std::endl;
       ultima_linea = atributo.second;
-      ultima_etiqueta_impresa = nombre_etiqueta;
+      ultima_etiqueta = nombre_etiqueta;
     }
     salida << atributo_real << std::endl;
   }
@@ -68,6 +71,7 @@ std::ostream& operator<<(std::ostream& salida, Almacen almacen) {
       salida << "[Line " << almacen.comentarios_.getVectorComentarios()[i].second << "]" << std::endl;
       salida << almacen.comentarios_.getVectorComentarios()[i].first << std::endl; 
     }
+    salida << std::endl;
   }
   return salida;
 }

@@ -2,9 +2,12 @@ PROGRAM: pagina.html
 
 DESCRIPTION: 
 <!-- Pagina principal de la asignatura de Computabilidad y Algoritmia -->
-STRUCTURE: 
-DOCTYPE
-HTML5
+
+STRUCTURE:
+HTML: True
+HEAD: True
+BODY: True
+DOCTYPE : HTML5
 
 TAGS: 
 [Line 3] html
@@ -31,39 +34,31 @@ TAGS:
 [Line 44] /html
 
 ATTRIBUTES: 
-[Line 12] href="https://campusvirtual.ull.es"
+[Line 12] a
 href="https://campusvirtual.ull.es"
-
-[Line 12] class="enlace"
 class="enlace"
 
-[Line 18] src="regex.png"
+[Line 18] img
 src="regex.png"
-
-[Line 18] alt="Expresiones regulares"
 alt="Expresiones regulares"
-
-[Line 18] width="400"
 width="400"
 
-[Line 29] href="https://regex101.com"
+[Line 29] a
 href="https://regex101.com"
-
-[Line 29] target="_blank"
 target="_blank"
 
-[Line 31] src="logo.png"
+[Line 31] img
 src="logo.png"
-
-[Line 31] alt="Logo de la universidad"
 alt="Logo de la universidad"
 
 COMMENTS: 
 [Line 2] DESCRIPTION
 <!-- Pagina principal de la asignatura de Computabilidad y Algoritmia -->
+
 [Line 39]
 <!--
     Esta seccion contiene los recursos recomendados.
     El contenido puede cambiar durante el curso.
     -->
+
 
