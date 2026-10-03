@@ -27,6 +27,7 @@ class EstDocumento {
     //Getters
     std::pair<std::string, int> getEstructura(int indice) { return estructuras_[indice]; }
     std::vector<std::pair<std::string, bool>> getVectorEstructura(void) { return estructuras_; }
+    std::pair<bool, int> getDcotype() { return doctype_; }
 
     //setters
     void setEstructura(const std::string comentario, bool encontrado) { estructuras_.push_back(std::pair<std::string, int>(comentario, encontrado)); }

@@ -77,7 +77,7 @@ Almacen Lectura(std::ifstream& fichero) {
   std::regex fin_comentario(R"(-->)");                // Detectar el fin del comentario HTML
   std::regex comentario_una_linea(R"(<!--.*?-->)");   // Detectar comentario HTML en una sola línea
   std::regex doctype(R"(<!DOCTYPE\s+html>)");         // Detectar la estructura básica DOCTYPE
-  std::regex expEtiquetas(R"(<\s*(/?)\s*([a-zA-Z][a-zA-Z0-9:-]*)\b([^>]*)>)"); // Detectar etiquetas
+  std::regex expEtiquetas(R"(<\s*(/)?\s*(html|head|title|body|h1|p|a|img)\b([^>]*)>)"); // Detectar etiquetas
   std::regex expAtributos(R"ATTR(([a-zA-Z_:][a-zA-Z0-9_.:-]*)\s*=\s*("[^"]*"|'[^']*'|[^\s>]+))ATTR"); // Detectar atributos
 
   std::smatch coincidencias; 
@@ -121,8 +121,7 @@ Almacen Lectura(std::ifstream& fichero) {
     auto etiquetas_end = std::sregex_iterator();
     for (std::sregex_iterator i = etiquetas_begin; i != etiquetas_end; ++i) {
       std::smatch match = *i;
-      bool es_cierre = match[1].matched; 
-      bool es_cierre = match[1].matched && !match[1].str().empty();
+      bool es_cierre = (match[1].str() == "/"); 
       std::string nombre_etiqueta = match[2].str();
       std::string atributos_str = match[3].str();
       etiquetas.setEtiquetas(es_cierre ? "/" + nombre_etiqueta : nombre_etiqueta, contador);
@@ -132,6 +131,7 @@ Almacen Lectura(std::ifstream& fichero) {
         for (std::sregex_iterator a = attr_begin; a != attr_end; ++a) {
           std::smatch attr_match = *a;
           std::string par_texto = attr_match.str();
+          std::string concatenar = nombre_etiqueta + "\n" + par_texto;
           atributos.setAtributo(par_texto, contador);
         }
       }

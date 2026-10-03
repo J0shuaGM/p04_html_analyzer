@@ -29,10 +29,10 @@ class Almacen {
     Etiquetas getEtiquetas(void) { return etiquetas_; }
 
     //Setters
-    Atributo setAtributo(Atributo atributo) { atributo_ = atributo; }
-    Comentarios setComentarios(Comentarios comentarios) { comentarios_ = comentarios; }
-    EstDocumento setDocumento(EstDocumento estructura) { estructura_ = estructura; }
-    Etiquetas setEtiquetas(Etiquetas etiquetas) { etiquetas_ = etiquetas; }
+    void setAtributo(Atributo atributo) { atributo_ = atributo; }
+    void setComentarios(Comentarios comentarios) { comentarios_ = comentarios; }
+    void setDocumento(EstDocumento estructura) { estructura_ = estructura; }
+    void setEtiquetas(Etiquetas etiquetas) { etiquetas_ = etiquetas; }
 
     //Sobrecarga del orperador de salida
     friend std::ostream& operator<<(std::ostream& salida, const Almacen almacen);
